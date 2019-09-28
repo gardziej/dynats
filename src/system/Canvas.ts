@@ -1,5 +1,7 @@
 import Vector2 from "./Vector2";
 import Color from "./Color";
+import iSpriteData from "./interfaces/iSpriteData";
+import Rectangle from "./Rectangle";
 
 export default class Canvas {
   div: HTMLElement;
@@ -81,6 +83,43 @@ export default class Canvas {
     this.ctx.fillStyle = color.toString();
     this.ctx.textAlign = textAlign;
     this.ctx.fillText(text, 0, 0);
+    this.ctx.restore();
+  };
+
+  drawRectangle(
+    x: number, 
+    y: number, 
+    width: number, 
+    height: number, 
+    color: string, 
+    lineColor?: string, 
+    lineWidth?: number
+    ) {
+    this.ctx.save();
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(x, y, width, height);
+
+    if (lineColor) {
+      this.ctx.strokeStyle = lineColor;
+      this.ctx.lineWidth = lineWidth || 1;
+    }
+    this.ctx.strokeRect(x, y, width, height);
+    this.ctx.restore();
+  };
+
+  drawImage(
+    sprite: iSpriteData, 
+    position: Vector2 = Vector2.zero, 
+    rotation: number = 0, 
+    origin: Vector2 = Vector2.zero,
+    sourceRect: Rectangle = new Rectangle(0, 0, sprite.img.width, sprite.img.height)
+    ) {
+    this.ctx.save();
+    this.ctx.translate(position.x, position.y);
+    this.ctx.rotate(rotation);
+    this.ctx.drawImage(sprite.img, sourceRect.x, sourceRect.y,
+      sourceRect.width, sourceRect.height, -origin.x, -origin.y,
+      sourceRect.width, sourceRect.height);
     this.ctx.restore();
   };
 

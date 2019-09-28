@@ -2,10 +2,7 @@ import Vector2 from './Vector2';
 
 export default class Rectangle {
 
-  public width: number;
-  public height: number;
-
-  constructor(public x: number = 0, public y: number = 0, public w: number = 0, public h: number = 0) {
+  constructor(public x: number = 0, public y: number = 0, public width: number = 0, public height: number = 0) {
   }
 
   get left() {

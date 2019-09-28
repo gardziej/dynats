@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf dist/* && cross-env NODE_ENV=production webpack",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --open",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --watch-content-base",
     "deploy": "node deploy"
   },
   "keywords": [],
@@ -23,5 +23,9 @@
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.8.0"
+  },
+  "dependencies": {
+    "@types/pathfinding": "0.0.3",
+    "pathfinding": "^0.4.18"
   }
 }

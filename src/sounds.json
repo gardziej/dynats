@@ -1,0 +1,9 @@
+[
+  { "name": "explosion", "volume": 0.4, "source": "assets/sounds/bomb.wav" },
+  { "name": "player_die", "volume": 0.8, "source": "assets/sounds/dying.wav" },
+  { "name": "bonus", "volume": 0.6, "source": "assets/sounds/bonus.wav" },
+  { "name": "hurryup", "volume": 1.0, "source": "assets/sounds/hurryup.wav" },
+  { "name": "stage_start", "volume": 0.1, "source": "assets/sounds/stage_start.wav" },
+  { "name": "player_win", "volume": 0.4, "source": "assets/sounds/win.wav" },
+  { "name": "time_out", "volume": 0.4, "source": "assets/sounds/time_out_10.wav" }
+]

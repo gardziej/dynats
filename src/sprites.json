@@ -1,0 +1,60 @@
+{
+  "background": "background.png",
+  "dashboard": "dashboard.png",
+  "start_panel": "start_panel.png",
+  "keyboard": "keyboard.png",
+  "game_over": "game_over.png",
+  "tiles": {
+    "grass": "map/grass@2.png",
+    "walls": "map/walls@10.png",
+    "steel": "map/steel.png",
+    "brick": "map/brick.png",
+    "player_idle": "player/idle@4.png",
+    "player_walking": "player/walking@16.png",
+    "player_die": "player/die@11.png",
+    "player_stars": "player/stars@2.png",
+    "bomb": "bomb@4.png",
+    "explosion": "explosion@29.png",
+    "brick_explosion": "map/brick_explosion@7.png",
+    "brick_sparky": "map/brick_sparky@2.png"
+  },
+  "player": {
+    "idle": "player/idle@4.png",
+    "walking": "player/walking@16.png",
+    "die": "player/die@11.png",
+    "stars": "player/stars@2.png",
+    "white": "player/white@4.png"
+  },
+  "bonus": {
+    "exit": "exit@2.png",
+    "bomb": "bonus/bonus_bomb@2.png",
+    "bomb_pass": "bonus/bonus_bomb_pass@2.png",
+    "detonator": "bonus/bonus_detonator@2.png",
+    "extra_life": "bonus/bonus_extra_life@2.png",
+    "flames": "bonus/bonus_flames@2.png",
+    "speed": "bonus/bonus_speed@2.png",
+    "brick_pass": "bonus/bonus_brick_pass@2.png",
+    "vest": "bonus/bonus_vest@2.png",
+    "explosion": "bonus/bonus_explosion@7.png"
+  },
+  "enemy": {
+    "priest": "enemy/priest@3.png",
+    "priest_die": "enemy/priest_die@5.png",
+    "frog": "enemy/frog@3.png",
+    "frog_die": "enemy/frog_die@7.png",
+    "bear": "enemy/bear@3.png",
+    "bear_die": "enemy/bear_die@5.png",
+    "diamond": "enemy/diamond@4.png",
+    "diamond_die": "enemy/diamond_die@5.png",
+    "broom": "enemy/broom@4.png",
+    "broom_die": "enemy/broom_die@7.png",
+    "drop": "enemy/drop@4.png",
+    "drop_die": "enemy/drop_die@7.png",
+    "droplet": "enemy/droplet@4.png",
+    "droplet_die": "enemy/droplet_die@5.png",
+    "fire": "enemy/fire@4.png",
+    "fire_die": "enemy/fire_die@7.png",
+    "ghost": "enemy/ghost@4.png",
+    "ghost_die": "enemy/ghost_die@7.png"
+  }
+}
