@@ -29,8 +29,8 @@ export default class StageNumberState extends BaseState {
   reset(): void {
     const bonuses = 4;
     const mapSize = {
-      x: 10,
-      y: 10
+      x: 15,
+      y: 15
     };
     // const mapSize = {
     //   x: 6 + this.game.gamePlayer.map + myHelper.getRandomInt(5, 10),

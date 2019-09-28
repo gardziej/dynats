@@ -7,8 +7,9 @@ import iSpriteDataCollection from "./system/interfaces/iSpriteDataCollection";
 import iSpriteData from "./system/interfaces/iSpriteData";
 import Animation from "./system/Animation";
 import Enemies from "./Enemies";
+import iMoveableObject from "./system/interfaces/iMoveableObject";
 
-export default class Enemy {
+export default class Enemy implements iMoveableObject {
 
   private startTile: Vector2;
   private direction: number;
@@ -22,8 +23,8 @@ export default class Enemy {
   private delayedWannaEatPlayerDelay: number;
   private delayedWannaEatPlayerDefault: number;
   private animations: any;
-  private position: Vector2;
-  private origin: Vector2;
+  public position: Vector2;
+  public origin: Vector2;
   private canvasPosition: Vector2;
 
   public bonus: iEnemyBonus; // TODO: fix it

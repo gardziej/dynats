@@ -12,6 +12,7 @@ import PointsList from "./PointsList";
 import Vector2 from "./system/Vector2";
 import Enemies from "./Enemies";
 import Enemy from "./Enemy";
+import iMoveableObject from "./system/interfaces/iMoveableObject";
 
 export default class Map {
 
@@ -24,7 +25,7 @@ export default class Map {
   public mapBigerThenCanvas: any;
   public black: number = 1;
   public x: number = 0;
-  public y: number = 0;  
+  public y: number = 0;
   public timer: MapTimer;
   public pfGrid: any;
 
@@ -41,16 +42,16 @@ export default class Map {
       this.h++;
     }
     this.grid.size = {
-      width : this.w,
+      width: this.w,
       height: this.h
-  };
+    };
 
     this.width = this.grid.size.width * Tile.size.width;
     this.height = this.grid.size.height * Tile.size.height;
 
     this.mapBigerThenCanvas = {
-      x : this.width > this.game.canvas.width,
-      y : this.height > this.game.canvas.height - 70
+      x: this.width > this.game.canvas.width,
+      y: this.height > this.game.canvas.height - 70
     };
   }
 
@@ -101,21 +102,18 @@ export default class Map {
     var x = 0;
     var y = 0;
     if (count < this.game.bonus.left) count = this.game.bonus.left;
-    while (this.grid.brick.count < count)
-    {
-      x = myHelper.getRandomInt(1, this.grid.size.width-2);
-      y = myHelper.getRandomInt(1, this.grid.size.height-2);
-      if (!this.isSolid(x,y) && x+y >3)
-        {
-        var gameobject = this.grid.brick.add(x,y);
+    while (this.grid.brick.count < count) {
+      x = myHelper.getRandomInt(1, this.grid.size.width - 2);
+      y = myHelper.getRandomInt(1, this.grid.size.height - 2);
+      if (!this.isSolid(x, y) && x + y > 3) {
+        var gameobject = this.grid.brick.add(x, y);
         var bonus = this.game.bonus.getOne();
-        if (bonus)
-          {
-            // this.grid.bonus.add(x,y,2,bonus);
-            gameobject.onBonus = true;
-            if (bonus === 'exit') gameobject.onExit = true;
-          }
+        if (bonus) {
+          // this.grid.bonus.add(x,y,2,bonus);
+          gameobject.onBonus = true;
+          if (bonus === 'exit') gameobject.onExit = true;
         }
+      }
     }
 
   }
@@ -132,15 +130,13 @@ export default class Map {
     this.enemies = new Enemies(this.game);
     var x = 0;
     var y = 0;
-    while (this.enemies.count < this.enemiesList.length)
-    {
-      x = myHelper.getRandomInt(1, this.grid.size.width-2);
-      y = myHelper.getRandomInt(1, this.grid.size.height-2);
-      if (!this.isSolid(x,y) && x+y >6)
-        {
-          this.enemies.add(new Enemy(new Vector2(x,y), this.game, this.enemies, this.enemiesList[0]));
-          this.enemiesList.shift();
-        }
+    while (this.enemies.count < this.enemiesList.length) {
+      x = myHelper.getRandomInt(1, this.grid.size.width - 2);
+      y = myHelper.getRandomInt(1, this.grid.size.height - 2);
+      if (!this.isSolid(x, y) && x + y > 6) {
+        this.enemies.add(new Enemy(new Vector2(x, y), this.game, this.enemies, this.enemiesList[0]));
+        this.enemiesList.shift();
+      }
     }
   };
 
@@ -152,40 +148,39 @@ export default class Map {
   // };
 
   addPoints(position: Vector2, val: number) {
-    position = new Vector2 (
-      position.x + Tile.size.width/2,
-      position.y + Tile.size.height/2 -10
+    position = new Vector2(
+      position.x + Tile.size.width / 2,
+      position.y + Tile.size.height / 2 - 10
     );
     this.game.gamePlayer.updateScore(val);
     this.pointsList.addPoint(position, val, this);
   };
 
-  tileInMap(x: number,y: number): boolean {
+  tileInMap(x: number, y: number): boolean {
     return x > 0 && y > 0 && x < this.grid.size.width && y < this.grid.size.height;
   }
 
-  isSolid(x: number,y: number): boolean {
-    return !this.tileInMap(x,y) ||
-      this.grid.walls.check(x,y) ||
-      this.grid.steel.check(x,y) ||
-      this.grid.brick.check(x,y) // ||
-      // this.grid.bombs.check(x,y); TODO
+  isSolid(x: number, y: number): boolean {
+    return !this.tileInMap(x, y) ||
+      this.grid.walls.check(x, y) ||
+      this.grid.steel.check(x, y) ||
+      this.grid.brick.check(x, y) // ||
+    // this.grid.bombs.check(x,y); TODO
   };
 
-  checkTile (x: number, y: number) {
+  checkTile(x: number, y: number) {
     const test = {
-      walls : this.grid.walls.check(x,y) || false,
-      steel : this.grid.steel.check(x,y),
-      brick : this.grid.brick.check(x,y),
-      bomb  : this.grid.bombs.check(x,y),
-      bonus : this.grid.bonus.check(x,y),
+      walls: this.grid.walls.check(x, y) || false,
+      steel: this.grid.steel.check(x, y),
+      brick: this.grid.brick.check(x, y),
+      bomb: this.grid.bombs.check(x, y),
+      bonus: this.grid.bonus.check(x, y),
       isSolid: false
     };
-    if (test.bonus)
-      {
-        // test.bonusType = this.grid.bonus.typeOfBonus(x,y);
-        // test.bonusActiv = this.grid.bonus.bonusActiv(x,y);
-      }
+    if (test.bonus) {
+      // test.bonusType = this.grid.bonus.typeOfBonus(x,y);
+      // test.bonusActiv = this.grid.bonus.bonusActiv(x,y);
+    }
     if (test.walls || test.steel || test.brick || test.bomb) test.isSolid = true;
     return test;
   };
@@ -327,47 +322,38 @@ export default class Map {
   //   this.enemies.checkImpact(x,y);
   // };
 
-  // Map.prototype.followPlayer = function () {
-  //   if (this.mapBigerThenCanvas.x || this.mapBigerThenCanvas.y)
-  //     {
-  //       if (this.player.origin.x> canvas.width / 2)
-  //       {
-  //         this.x = -1 * (this.player.origin.x - canvas.width / 2);
-  //       }
-  //       if (this.player.origin.y + 70  > canvas.height / 2)
-  //       {
-  //         this.y = -1 * (this.player.origin.y - canvas.height / 2);
-  //       }
-  //       if (this.player.origin.x <= canvas.width / 2)
-  //       {
-  //         this.x = 0;
-  //       }
-  //       if (this.player.origin.y + 70  <= canvas.height / 2)
-  //       {
-  //         this.y = 70;
-  //       }
-  //     }
-  // };
+  followMoveableObject(moveableObject: iMoveableObject) {
+    if (this.mapBigerThenCanvas.x || this.mapBigerThenCanvas.y) {
+      if (moveableObject.origin.x > this.game.canvas.width / 2) {
+        this.x = -1 * (moveableObject.origin.x - this.game.canvas.width / 2);
+      }
+      if (moveableObject.origin.y + 70 > this.game.canvas.height / 2) {
+        this.y = -1 * (moveableObject.origin.y - this.game.canvas.height / 2);
+      }
+      if (moveableObject.origin.x <= this.game.canvas.width / 2) {
+        this.x = 0;
+      }
+      if (moveableObject.origin.y + 70 <= this.game.canvas.height / 2) {
+        this.y = 70;
+      }
+    }
+  };
 
   keepInCanvas(): void {
-    if (this.mapBigerThenCanvas.x)
-      {
-        if (this.x < -1 * (this.width - this.game.canvas.width)) this.x = -1 * (this.width - this.game.canvas.width);
-        if (this.x > 0) this.x = 0;
-      }
-    else
-      {
-        this.x = (this.game.canvas.width - this.width) /2;
-      }
-    if (this.mapBigerThenCanvas.y)
-      {
-        if (this.y < -1 * (this.height - this.game.canvas.height)) this.y = -1 * (this.height - this.game.canvas.height);
-        if (this.y > 70) this.y = 70;
-      }
-      else
-      {
-        this.y = (this.game.canvas.height - this.height) /2 + 70/2;
-      }
+    if (this.mapBigerThenCanvas.x) {
+      if (this.x < -1 * (this.width - this.game.canvas.width)) this.x = -1 * (this.width - this.game.canvas.width);
+      if (this.x > 0) this.x = 0;
+    }
+    else {
+      this.x = (this.game.canvas.width - this.width) / 2;
+    }
+    if (this.mapBigerThenCanvas.y) {
+      if (this.y < -1 * (this.height - this.game.canvas.height)) this.y = -1 * (this.height - this.game.canvas.height);
+      if (this.y > 70) this.y = 70;
+    }
+    else {
+      this.y = (this.game.canvas.height - this.height) / 2 + 70 / 2;
+    }
   };
 
   update(delta: number): void {
@@ -387,7 +373,7 @@ export default class Map {
     //     this.grid.brick.makeSparky();
     //   }
 
-    // this.followPlayer();
+    this.followMoveableObject(this.enemies.at(0));
     this.keepInCanvas();
 
     // this.player.update(delta);
