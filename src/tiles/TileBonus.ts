@@ -21,9 +21,9 @@ export default class TileBonus extends Tile {
     public bonus: string = null
   ) {
     super(game, type, position, coordinates, frame);
-    this.animations.playing = new Animation(this.game, this, sprites.getSprite(this.bonus), true, 0.2, true, 0);
-    this.animations.activ = new Animation(this.game, this, sprites.getSprite(this.bonus), true, 0.2);
-    this.animations.explosion = new Animation(this.game, this, sprites.getSprite('explosion'), false, 0.05);
+    this.animations.playing = new Animation(this.game, this, sprites.getSprite('bonus', this.bonus), true, 0.2, true, 0);
+    this.animations.activ = new Animation(this.game, this, sprites.getSprite('bonus', this.bonus), true, 0.2);
+    this.animations.explosion = new Animation(this.game, this, sprites.getSprite('bonus', 'explosion'), false, 0.05);
   }
 
   update(delta: number) {

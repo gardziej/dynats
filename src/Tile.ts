@@ -23,7 +23,10 @@ export default class Tile {
     public coordinates: Vector2, 
     public frame: number = 0
     ) {
-    this.animations.playing = new Animation(this.game, this, (<iSpriteDataCollection>sprites.data.tiles)[this.type] as iSpriteData, false, 0.2, true, this.frame, null);
+    const sprite: iSpriteData = sprites.getSprite('tiles', this.type);
+    if (sprite) {
+      this.animations.playing = new Animation(this.game, this, sprite, false, 0.2, true, this.frame, null);
+    }
   }
 
   update(delta: number): void {
