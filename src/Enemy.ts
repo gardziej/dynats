@@ -3,8 +3,6 @@ import Game from "./Game";
 import myHelper from "./system/myHelper";
 import Vector2 from "./system/Vector2";
 import sprites from "./system/Sprites";
-import iSpriteDataCollection from "./system/interfaces/iSpriteDataCollection";
-import iSpriteData from "./system/interfaces/iSpriteData";
 import Animation from "./system/Animation";
 import Enemies from "./Enemies";
 import iMoveableObject from "./system/interfaces/iMoveableObject";
@@ -18,7 +16,7 @@ export default class Enemy implements iMoveableObject {
   private height: number;
   private velocity: Vector2;
   private stage: string;
-  private tilePosition: any;
+  public tilePosition: any;
   private delayedWannaEatPlayer: boolean;
   private delayedWannaEatPlayerDelay: number;
   private delayedWannaEatPlayerDefault: number;
@@ -56,8 +54,8 @@ export default class Enemy implements iMoveableObject {
 
     this.animations.playing = new Animation(
       this.game, 
-      this, 
-      (sprites.data.enemy as iSpriteDataCollection)[this.type] as iSpriteData, 
+      this,
+      sprites.getSprite('enemy', this.type),
       true, 
       0.2,
       false,
@@ -67,7 +65,7 @@ export default class Enemy implements iMoveableObject {
     this.animations.die = new Animation(
       this.game, 
       this, 
-      (<iSpriteDataCollection>sprites.data.enemy)[this.type + "_die"] as iSpriteData, 
+      sprites.getSprite('enemy', this.type, true), 
       false, 
       0.3,
       false,
@@ -213,23 +211,23 @@ export default class Enemy implements iMoveableObject {
     if (!this.isSolidForEnemy(x, y - 1)) roads.push(0);
 
     if (this.bonus.goForPlayer) {
-      // level = 'floor';
-      // if (this.bonus.brick_pass) level = 'air';
-      // path = this.game.map.findRoadtoPlayer(x, y, level);
-      // if (path.arr && path.arr.length > 1) {
-      //   directionToPlayer = {
-      //     x: path.arr[1][0],
-      //     y: path.arr[1][1]
-      //   };
+      level = 'floor';
+      if (this.bonus.brick_pass) level = 'air';
+      path = this.game.map.findRoadtoTarget(this, x, y, level);
+      if (path.arr && path.arr.length > 1) {
+        directionToPlayer = {
+          x: path.arr[1][0],
+          y: path.arr[1][1]
+        };
 
-      //   if (directionToPlayer.x < x) roadToPlayer = 3;
-      //   if (directionToPlayer.x > x) roadToPlayer = 1;
-      //   if (directionToPlayer.y > y) roadToPlayer = 2;
-      //   if (directionToPlayer.y < y) roadToPlayer = 0;
-      //   if (roads.indexOf(roadToPlayer) >= 0) {
-      //     return roadToPlayer;
-      //   }
-      // }
+        if (directionToPlayer.x < x) roadToPlayer = 3;
+        if (directionToPlayer.x > x) roadToPlayer = 1;
+        if (directionToPlayer.y > y) roadToPlayer = 2;
+        if (directionToPlayer.y < y) roadToPlayer = 0;
+        if (roads.indexOf(roadToPlayer) >= 0) {
+          return roadToPlayer;
+        }
+      }
     }
     else if (this.bonus.goForPlayerInView) {
       // level = 'floor';

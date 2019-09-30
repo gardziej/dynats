@@ -3,7 +3,6 @@ import iSpriteData from "./interfaces/iSpriteData";
 
 class Sprites {
 
-
   public data: iSpriteDataCollection  = {};
 
   public totalSprites: number = 0;
@@ -53,6 +52,17 @@ class Sprites {
       this.spritesStillLoading -= 1;
     }.bind(this);
     return image;
+  }
+
+  getSprite(name: string, subname: string = null, die: boolean = false): iSpriteData {
+    if (subname) {
+      if (die) {
+        subname = subname + '_die';
+      }
+      return (this.data[name] as iSpriteDataCollection)[subname] as iSpriteData;
+    } else {
+      return this.data[name] as iSpriteData;
+    }
   }
 
 }

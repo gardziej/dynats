@@ -28,14 +28,14 @@ export default class StageNumberState extends BaseState {
 
   reset(): void {
     const bonuses = 4;
-    const mapSize = {
-      x: 15,
-      y: 15
-    };
     // const mapSize = {
-    //   x: 6 + this.game.gamePlayer.map + myHelper.getRandomInt(5, 10),
-    //   y: 6 + this.game.gamePlayer.map + myHelper.getRandomInt(0, 5),
+    //   x: 14,
+    //   y: 12
     // };
+    const mapSize = {
+      x: 6 + this.game.gamePlayer.map + myHelper.getRandomInt(5, 10),
+      y: 6 + this.game.gamePlayer.map + myHelper.getRandomInt(0, 5),
+    };
 
     const enemiesCount: number = mapSize.x * mapSize.y / 15;
     const enemiesList: any = [];
@@ -50,7 +50,7 @@ export default class StageNumberState extends BaseState {
 
     this.game.gamePlayer.time = mapSize.x * mapSize.y / 2;
     if (this.game.gamePlayer.time > 600) this.game.gamePlayer.time = 599;
-    const bricksCount = mapSize.x * mapSize.y / 5;
+    const bricksCount = 0; //mapSize.x * mapSize.y / 5;
 
   //   if (bricksCount < bonuses) bricksCount = bonuses;
 

@@ -12,7 +12,7 @@ export default class PlayingState extends BaseState {
   }
 
   draw(): void {
-    this.game.canvas.drawImage(sprites.data.background as iSpriteData, Vector2.zero, 0, Vector2.zero, new Rectangle(0, 0, this.game.canvas.width, this.game.canvas.height));
+    this.game.canvas.drawImage(sprites.getSprite('background'), Vector2.zero, 0, Vector2.zero, new Rectangle(0, 0, this.game.canvas.width, this.game.canvas.height));
     this.game.map.draw();
     this.game.dashboard.draw(
       this.game.map.timer.toString(), 

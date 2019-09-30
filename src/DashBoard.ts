@@ -30,7 +30,7 @@ export default class DashBoard {
   }
 
   draw(time: string, hiscore: string, score: string, lives: string, ending: boolean): void {
-    this.game.canvas.drawImage(sprites.data.dashboard as iSpriteData, Vector2.zero);
+    this.game.canvas.drawImage(sprites.getSprite('dashboard'), Vector2.zero);
     this.drawSteadyText(score, new Vector2(300, 25));
     if (ending) {
       this.drawBlinkingText(time, new Vector2(470, 25));

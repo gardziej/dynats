@@ -33,10 +33,10 @@ define(['jquery', 'system/Sprites', 'system/Vector2', 'system/Canvas', 'system/R
     };
 
     GameOverState.prototype.draw = function () {
-        canvas.drawImage(sprites.game_over, Vector2.zero, 0, Vector2.zero, new Rectangle(0, 0, canvas.width, canvas.height));
-        canvas.drawText("enter your name and press enter", new Vector2(canvas.width/2, 100), Vector2.zero, "yellow", "center", "'Press Start 2P'", "30px" );
-        canvas.drawText(this.game.gamePlayer.name, new Vector2(canvas.width/2, 150), Vector2.zero, "yellow", "center", "'Press Start 2P'", "30px" );
-        canvas.drawRectangle(263, 183, 370, 2, "yellow");
+      canvas.drawImage(sprites.getSprite('game_over'), Vector2.zero, 0, Vector2.zero, new Rectangle(0, 0, canvas.width, canvas.height));
+      canvas.drawText("enter your name and press enter", new Vector2(canvas.width/2, 100), Vector2.zero, "yellow", "center", "'Press Start 2P'", "30px" );
+      canvas.drawText(this.game.gamePlayer.name, new Vector2(canvas.width/2, 150), Vector2.zero, "yellow", "center", "'Press Start 2P'", "30px" );
+      canvas.drawRectangle(263, 183, 370, 2, "yellow");
       canvas.drawText("your score: " + this.game.gamePlayer.score, new Vector2(100,470), Vector2.zero, "white", "left", "'Press Start 2P'", "30px" );
       canvas.drawText("your best score: " + this.game.gamePlayer.hiscore, new Vector2(100,520), Vector2.zero, "white", "left", "'Press Start 2P'", "30px" );
     };

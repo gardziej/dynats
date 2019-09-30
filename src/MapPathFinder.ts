@@ -13,17 +13,19 @@ export default class MapPathFinder {
     };
   }
 
-  findWay = function (a: Vector2, b: Vector2, level: string) {
+  findWay(a: Vector2, b: Vector2, level: string) {
     var finder = new PF.AStarFinder();
     var grid = this.pfGrid[level].clone();
     var path = finder.findPath(a.x, a.y, b.x, b.y, grid);
+    console.log('PRG: a.x, a.y, b.x, b.y, grid', a.x, a.y, b.x, b.y, grid); // TODO remove this
+    console.log('PRG: path', path); // TODO remove this
     if (path.length > 0)
       return path;
     else return false;
   }
 
 
-  setWalkableAt = function (x: number, y: number, level: string, type: boolean) {
+  setWalkableAt(x: number, y: number, level: string, type: boolean) {
     if (typeof type === "undefined") type = false;
     this.pfGrid[level].setWalkableAt(x, y, type);
   }

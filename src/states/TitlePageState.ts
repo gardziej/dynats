@@ -16,8 +16,8 @@ export default class TitlePageState extends BaseState {
   };
 
   draw() {
-    this.game.canvas.drawImage(sprites.data.start_panel as iSpriteData, Vector2.zero, 0, Vector2.zero, new Rectangle(0, 0, this.game.canvas.width, this.game.canvas.height));
-    this.game.canvas.drawImage(sprites.data.keyboard as iSpriteData, Vector2.zero, 0, Vector2.zero, new Rectangle(0, 0, this.game.canvas.width, this.game.canvas.height));
+    this.game.canvas.drawImage(sprites.getSprite('start_panel'), Vector2.zero, 0, Vector2.zero, new Rectangle(0, 0, this.game.canvas.width, this.game.canvas.height));
+    this.game.canvas.drawImage(sprites.getSprite('keyboard'), Vector2.zero, 0, Vector2.zero, new Rectangle(0, 0, this.game.canvas.width, this.game.canvas.height));
   };
 
 }

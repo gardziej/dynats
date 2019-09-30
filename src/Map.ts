@@ -194,26 +194,24 @@ export default class Map {
   //   }
   // };
 
-  // Map.prototype.findRoadtoPlayer = function(x,y, level)
-  // {
-  //   var road = {
-  //     arr : this.pfGrid.findWay(new Vector2(x,y),
-  //                    new Vector2(this.player.tilePosition.xTile,this.player.tilePosition.yTile), level),
-  //     inLine : false,
-  //     inView : false
-  //   };
+  findRoadtoTarget(moveableObject: iMoveableObject, x: number, y: number, level: string) {
+    var road = {
+      arr: this.pfGrid.findWay(new Vector2(x, y),
+        new Vector2(moveableObject.tilePosition.xTile, moveableObject.tilePosition.yTile), level),
+      inLine: false,
+      inView: false
+    };
 
-  //   if (x === this.player.tilePosition.xTile || y === this.player.tilePosition.yTile)
-  //     road.inLine = true;
-  //   var test = { x: true, y : true};
-  //   for (var i = 1, j = road.arr.length; i < j; i++)
-  //     {
-  //       if (road.arr[i][0] != road.arr[i-1][0]) test.x = false;
-  //       if (road.arr[i][1] != road.arr[i-1][1]) test.y = false;
-  //     }
-  //   if (test.x || test.y) road.inView = true;
-  //   return road;
-  // };
+    if (x === moveableObject.tilePosition.xTile || y === moveableObject.tilePosition.yTile)
+      road.inLine = true;
+    var test = { x: true, y: true };
+    for (var i = 1, j = road.arr.length; i < j; i++) {
+      if (road.arr[i][0] != road.arr[i - 1][0]) test.x = false;
+      if (road.arr[i][1] != road.arr[i - 1][1]) test.y = false;
+    }
+    if (test.x || test.y) road.inView = true;
+    return road;
+  };
 
   // Map.prototype.checkBonus = function (x,y) {
   //   var checkTile = this.checkTile(x,y);
@@ -322,7 +320,7 @@ export default class Map {
   //   this.enemies.checkImpact(x,y);
   // };
 
-  followMoveableObject(moveableObject: iMoveableObject) {
+  followTarget(moveableObject: iMoveableObject) {
     if (this.mapBigerThenCanvas.x || this.mapBigerThenCanvas.y) {
       if (moveableObject.origin.x > this.game.canvas.width / 2) {
         this.x = -1 * (moveableObject.origin.x - this.game.canvas.width / 2);
@@ -373,7 +371,7 @@ export default class Map {
     //     this.grid.brick.makeSparky();
     //   }
 
-    this.followMoveableObject(this.enemies.at(0));
+    this.followTarget(this.enemies.at(0));
     this.keepInCanvas();
 
     // this.player.update(delta);
