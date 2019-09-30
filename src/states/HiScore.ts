@@ -1,5 +1,6 @@
 import BaseState from "../system/BaseState";
 import Vector2 from "../system/Vector2";
+import * as settings from '../settings';
 
 export default class HiScore extends BaseState {
 
@@ -8,7 +9,7 @@ export default class HiScore extends BaseState {
   draw() {
     this.game.canvas.drawRectangle(0, 0, this.game.canvas.width, this.game.canvas.height, "black");
     this.game.canvas.drawText("hiscore", new Vector2(this.game.canvas.width / 2, 50), Vector2.zero, "white", "center", "'Press Start 2P'", "30px");
-    this.game.canvas.drawText("(press ESC to exit)", new Vector2(this.game.canvas.width / 2, 90), Vector2.zero, "white", "center", "Verdana", "10px");
+    this.game.canvas.drawText("(press ESC to exit)", new Vector2(this.game.canvas.width / 2, 90), Vector2.zero, "yellow", "center", "Verdana", "10px");
 
     let k = 1;
     let pos = 100;
@@ -43,10 +44,11 @@ export default class HiScore extends BaseState {
   };
 
   reset = function () {
-    this.hiscores = JSON.parse(fakeJSON);
+    fetch(settings.HiScoreURL).then((response: Response) => {
+      response.json().then(json => {
+        this.hiscores = json;
+      });
+    });
   };
 
 }
-
-
-const fakeJSON = '[{"id":"337","gra":"dyna","mapa":"15","gracz":"GARDZIEJ","punkty":"321700","ip":"81.190.178.71","dodano":"2016-04-30"},{"id":"203","gra":"dyna","mapa":"10","gracz":" ANIA ","punkty":"179500","ip":"83.20.136.174","dodano":"2015-09-07"},{"id":"339","gra":"dyna","mapa":"10","gracz":"GARDZIEJ","punkty":"147300","ip":"81.190.174.33","dodano":"2017-03-10"},{"id":"198","gra":"dyna","mapa":"10","gracz":" ANIA ","punkty":"131400","ip":"83.11.197.10","dodano":"2015-09-06"},{"id":"23","gra":"dyna","mapa":"11","gracz":"GARDZIEJ","punkty":"127900","ip":"81.190.168.150","dodano":"2015-07-11"},{"id":"155","gra":"dyna","mapa":"9","gracz":" ANIA","punkty":"123800","ip":"79.184.89.72","dodano":"2015-08-22"},{"id":"13","gra":"dyna","mapa":"9","gracz":"GARDZIEJ","punkty":"121300","ip":"81.190.169.205","dodano":"2015-07-06"},{"id":"177","gra":"dyna","mapa":"9","gracz":" ANIAQ","punkty":"111400","ip":"79.184.207.185","dodano":"2015-09-02"},{"id":"157","gra":"dyna","mapa":"7","gracz":" ANIA","punkty":"105500","ip":"79.184.213.34","dodano":"2015-08-23"},{"id":"342","gra":"dyna","mapa":"10","gracz":"GARDZIEJ","punkty":"105100","ip":"81.190.174.33","dodano":"2017-05-03"}]';

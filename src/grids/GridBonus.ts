@@ -1,23 +1,18 @@
-define(['game/Grid', 'game/Tile', 'system/Canvas', 'system/Sprites', 'system/Vector2', 'game/tiles/TileBonus'],
-  function(Grid, Tile, canvas, sprites, Vector2, TileBonus){
+import Grid from "../Grid";
 
-  function GridBonus (parent, cols, rows, mode)
-  {
-    Grid.call(this, parent, cols, rows, mode);
-    this.level = 0;
-    this.type = "bonus";
-  }
+export default class GridBonus extends Grid {
 
-  GridBonus.prototype = Object.create(Grid.prototype);
+  public level: number = 1;
+  public type: string = 'bonus';
 
-  GridBonus.prototype.typeOfBonus = function (x,y) {
+  typeOfBonus(x,y) {
     if (this.grid[y * this.cols + x] === 1 && typeof this.tiles[y * this.cols + x] !== "undefined")
     {
       return this.tiles[y * this.cols + x].bonus;
     }
   };
 
-  GridBonus.prototype.bonusActiv = function (x,y) {
+  bonusActiv(x,y) {
     if (this.grid[y * this.cols + x] === 1 && typeof this.tiles[y * this.cols + x] !== "undefined")
     {
       return this.tiles[y * this.cols + x].activ;
@@ -25,14 +20,14 @@ define(['game/Grid', 'game/Tile', 'system/Canvas', 'system/Sprites', 'system/Vec
     return false;
   };
 
-  GridBonus.prototype.makeActiv = function (x,y) {
+  makeActiv(x,y) {
     if (this.grid[y * this.cols + x] === 1 && typeof this.tiles[y * this.cols + x] !== "undefined")
     {
       this.tiles[y * this.cols + x].activ = true;
     }
   };
 
-  GridBonus.prototype.add = function (x, y, frame, bonus) {
+  add(x, y, frame, bonus) {
     if (!this.check(x,y))
     {
     this.frame = frame || 0;
@@ -42,7 +37,7 @@ define(['game/Grid', 'game/Tile', 'system/Canvas', 'system/Sprites', 'system/Vec
     }
   };
 
-  GridBonus.prototype.makeAllActiv = function () {
+  makeAllActiv() {
     for (var i in this.tiles)
       {
         if (this.grid[i] === 1 && typeof this.tiles[i] !== "undefined")
@@ -52,10 +47,8 @@ define(['game/Grid', 'game/Tile', 'system/Canvas', 'system/Sprites', 'system/Vec
   };
 
 
-  GridBonus.prototype.explode = function (x,y) {
+  explode(x,y) {
     this.tiles[y * this.cols + x].trigger();
   };
 
-  return GridBonus;
-
-});
+}
