@@ -11,7 +11,7 @@ export default class PointsList extends GameObjectList {
   }
 
   addPoint(position: Vector2, val: number, map: Map) {
-      var gameobject = new Points(this, position, val, this.game);
+      let gameobject = new Points(this, position, val, this.game);
       this.gameObjects.push(gameobject);
       gameobject.parent = this;
   }

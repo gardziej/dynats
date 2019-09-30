@@ -24,8 +24,8 @@ export default class TileBrick extends Tile {
     ) {
     super(game, type, position, coordinates, frame);
 
-    this.animations.sparky = new Animation (this.game, this, (sprites.data.tiles as iSpriteDataCollection).brick_sparky as iSpriteData, true, 0.3);
-    this.animations.explosion = new Animation (this.game, this, (sprites.data.tiles as iSpriteDataCollection).brick_explosion as iSpriteData, false, 0.05);
+    this.animations.sparky = new Animation(this.game, this, (sprites.data.tiles as iSpriteDataCollection).brick_sparky as iSpriteData, true, 0.3);
+    this.animations.explosion = new Animation(this.game, this, (sprites.data.tiles as iSpriteDataCollection).brick_explosion as iSpriteData, false, 0.05);
   }
 
   update(delta: number): void {

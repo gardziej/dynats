@@ -25,7 +25,7 @@ export default class Enemy implements iMoveableObject {
   public origin: Vector2;
   private canvasPosition: Vector2;
 
-  public bonus: iEnemyBonus; // TODO: fix it
+  public bonus: iEnemyBonus;
 
   constructor(private tile: Vector2, private game: Game, private parent: Enemies, private type: any) {
     this.startTile = tile;
@@ -91,7 +91,7 @@ export default class Enemy implements iMoveableObject {
   };
 
   calculateOnTile() {
-    var saveMargin = 0.2;
+    let saveMargin = 0.2;
 
     this.tilePosition = {
       xTile: 0,
@@ -109,11 +109,11 @@ export default class Enemy implements iMoveableObject {
       leftFrame: false
     };
 
-    var orgX = this.origin.x / Tile.size.width;
-    var orgY = this.origin.y / Tile.size.height;
+    let orgX = this.origin.x / Tile.size.width;
+    let orgY = this.origin.y / Tile.size.height;
 
-    var xTile = Math.floor(orgX);
-    var yTile = Math.floor(orgY);
+    let xTile = Math.floor(orgX);
+    let yTile = Math.floor(orgY);
 
     this.tilePosition.x = xTile * Tile.size.width;
     this.tilePosition.y = yTile * Tile.size.height;
@@ -153,7 +153,7 @@ export default class Enemy implements iMoveableObject {
   };
 
   isSolidForEnemy(x: number, y: number) {
-    var test;
+    let test;
     if (this.bonus.brick_pass === true && this.bonus.bomb_pass === true) {
       test = this.game.map.checkTile(x, y);
       if (test.walls || test.steel) return true;
@@ -198,13 +198,13 @@ export default class Enemy implements iMoveableObject {
   };
 
   checkForCrossRoad() {
-    var x = this.tilePosition.xTile;
-    var y = this.tilePosition.yTile;
-    var roads = [];
-    var level;
-    var path;
-    var directionToPlayer;
-    var roadToPlayer;
+    let x = this.tilePosition.xTile;
+    let y = this.tilePosition.yTile;
+    let roads = [];
+    let level;
+    let path;
+    let directionToPlayer;
+    let roadToPlayer;
     if (!this.isSolidForEnemy(x + 1, y)) roads.push(1);
     if (!this.isSolidForEnemy(x - 1, y)) roads.push(3);
     if (!this.isSolidForEnemy(x, y + 1)) roads.push(2);
@@ -230,27 +230,27 @@ export default class Enemy implements iMoveableObject {
       }
     }
     else if (this.bonus.goForPlayerInView) {
-      // level = 'floor';
-      // if (this.bonus.brick_pass) level = 'air';
-      // path = this.game.map.findRoadtoPlayer(x, y, level);
-      // if (path.arr && path.arr.length > 1 && path.inView) {
-      //   directionToPlayer = {
-      //     x: path.arr[1][0],
-      //     y: path.arr[1][1]
-      //   };
+      level = 'floor';
+      if (this.bonus.brick_pass) level = 'air';
+      path = this.game.map.findRoadtoTarget(this.game.map.player, x, y, level);
+      if (path.arr && path.arr.length > 1 && path.inView) {
+        directionToPlayer = {
+          x: path.arr[1][0],
+          y: path.arr[1][1]
+        };
 
-      //   if (directionToPlayer.x < x) roadToPlayer = 3;
-      //   if (directionToPlayer.x > x) roadToPlayer = 1;
-      //   if (directionToPlayer.y > y) roadToPlayer = 2;
-      //   if (directionToPlayer.y < y) roadToPlayer = 0;
-      //   if (roads.indexOf(roadToPlayer) >= 0) {
-      //     return roadToPlayer;
-      //   }
-      // }
+        if (directionToPlayer.x < x) roadToPlayer = 3;
+        if (directionToPlayer.x > x) roadToPlayer = 1;
+        if (directionToPlayer.y > y) roadToPlayer = 2;
+        if (directionToPlayer.y < y) roadToPlayer = 0;
+        if (roads.indexOf(roadToPlayer) >= 0) {
+          return roadToPlayer;
+        }
+      }
     }
     else {
       if (roads.indexOf(this.direction) >= 0 && roads.length > 1) {
-        var wannaChangeDirection = myHelper.getRandomInt(0, 9);
+        let wannaChangeDirection = myHelper.getRandomInt(0, 9);
         if (wannaChangeDirection < this.bonus.roadChanging) return this.direction;
       }
     }
@@ -277,12 +277,12 @@ export default class Enemy implements iMoveableObject {
     this.calculateOnTile();
 
     this.velocity = Vector2.zero;
-    var x = this.tilePosition.xTile;
-    var y = this.tilePosition.yTile;
+    let x = this.tilePosition.xTile;
+    let y = this.tilePosition.yTile;
 
 
     if (this.tilePosition.center) {
-      var crossRoadCheck = this.checkForCrossRoad();
+      let crossRoadCheck = this.checkForCrossRoad();
       this.changeDirection(crossRoadCheck);
     }
 

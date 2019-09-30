@@ -9,7 +9,7 @@ export default class GridBricks extends Grid {
   public tiles: TileBrick[] = [];
 
   makeSparky() {
-    for (var i in this.tiles) {
+    for (let i in this.tiles) {
       if (this.tiles[i].onBonus) {
         if (!this.tiles[i].onExit)
           this.tiles[i].sparky = true;
@@ -18,7 +18,7 @@ export default class GridBricks extends Grid {
   };
 
   add(x: number, y: number) {
-    var gameobject = null;
+    let gameobject = null;
     if (!this.check(x, y)) {
       gameobject = new TileBrick(this.game, this, this.type, this.calculateTilePosition(x, y), new Vector2(x, y));
       this.grid[y * this.cols + x] = 1;

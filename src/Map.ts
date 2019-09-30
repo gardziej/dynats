@@ -13,6 +13,10 @@ import Vector2 from "./system/Vector2";
 import Enemies from "./Enemies";
 import Enemy from "./Enemy";
 import iMoveableObject from "./system/interfaces/iMoveableObject";
+import GridBonus from "./grids/GridBonus";
+import Player from "./Player";
+import GridBombs from "./grids/GridBombs";
+import sounds from "./system/Sounds";
 
 export default class Map {
 
@@ -28,6 +32,7 @@ export default class Map {
   public y: number = 0;
   public timer: MapTimer;
   public pfGrid: any;
+  public player: Player;
 
 
   public enemies: Enemies = new Enemies(this.game);
@@ -61,13 +66,13 @@ export default class Map {
     this.makePFs();
     this.makeGrass();
     this.makeWalls();
-    // this.makeBonus();
-    // this.makeBombs();
+    this.makeBonus();
+    this.makeBombs();
     this.makeSteel();
     this.makeBrick(this.bricksCount);
-    // this.makePlayer();
+    this.makePlayer();
     this.makeEnemies();
-    // this.timer.init();
+    this.timer.init();
   };
 
   makePFs(): void {
@@ -84,13 +89,13 @@ export default class Map {
     this.grid.walls.fill();
   };
 
-  // Map.prototype.makeBonus = function () {
-  //   this.grid.bonus = new GridBonus(this, this.grid.size.width, this.grid.size.height);
-  // };
+  makeBonus(): void {
+    this.grid.bonus = new GridBonus(this.game, this.grid.size.width, this.grid.size.height);
+  };
 
-  // Map.prototype.makeBombs = function () {
-  //   this.grid.bombs = new GridBombs(this, this.grid.size.width, this.grid.size.height);
-  // };
+  makeBombs(): void {
+    this.grid.bombs = new GridBombs(this.game, this.grid.size.width, this.grid.size.height);
+  };
 
   makeSteel(): void {
     this.grid.steel = new GridSteel(this.game, this.grid.size.width, this.grid.size.height);
@@ -99,17 +104,17 @@ export default class Map {
 
   makeBrick(count: number): void {
     this.grid.brick = new GridBricks(this.game, this.grid.size.width, this.grid.size.height);
-    var x = 0;
-    var y = 0;
+    let x = 0;
+    let y = 0;
     if (count < this.game.bonus.left) count = this.game.bonus.left;
     while (this.grid.brick.count < count) {
       x = myHelper.getRandomInt(1, this.grid.size.width - 2);
       y = myHelper.getRandomInt(1, this.grid.size.height - 2);
       if (!this.isSolid(x, y) && x + y > 3) {
-        var gameobject = this.grid.brick.add(x, y);
-        var bonus = this.game.bonus.getOne();
+        let gameobject = this.grid.brick.add(x, y);
+        let bonus = this.game.bonus.getOne();
         if (bonus) {
-          // this.grid.bonus.add(x,y,2,bonus);
+          this.grid.bonus.addBonus(x,y,2,bonus);
           gameobject.onBonus = true;
           if (bonus === 'exit') gameobject.onExit = true;
         }
@@ -118,18 +123,18 @@ export default class Map {
 
   }
 
-  // Map.prototype.die = function (type) {
-  //   this.game.restartMap(type);
-  // };
+  die(type: string): void {
+    this.game.restartMap(type);
+  };
 
-  // Map.prototype.makePlayer = function () {
-  //   this.player = new Player(new Vector2(1,1), this, this.game.gamePlayer);
-  // };
+  makePlayer() {
+    this.player = new Player(new Vector2(1,1), this.game, this.game.gamePlayer);
+  };
 
   makeEnemies() {
     this.enemies = new Enemies(this.game);
-    var x = 0;
-    var y = 0;
+    let x = 0;
+    let y = 0;
     while (this.enemies.count < this.enemiesList.length) {
       x = myHelper.getRandomInt(1, this.grid.size.width - 2);
       y = myHelper.getRandomInt(1, this.grid.size.height - 2);
@@ -140,12 +145,12 @@ export default class Map {
     }
   };
 
-  // Map.prototype.addBomb = function (x,y, player, life, area) {
-  //   if (!this.isSolid(x,y))
-  //   {
-  //     this.grid.bombs.add(x,y, player, life, area);
-  //   }
-  // };
+  addBomb(x: number, y: number, player: Player, life: number, area: number) {
+    if (!this.isSolid(x,y))
+    {
+      this.grid.bombs.addBomb(x,y, player, life, area);
+    }
+  };
 
   addPoints(position: Vector2, val: number) {
     position = new Vector2(
@@ -164,38 +169,40 @@ export default class Map {
     return !this.tileInMap(x, y) ||
       this.grid.walls.check(x, y) ||
       this.grid.steel.check(x, y) ||
-      this.grid.brick.check(x, y) // ||
-    // this.grid.bombs.check(x,y); TODO
+      this.grid.brick.check(x, y) ||
+      this.grid.bombs.check(x,y);
   };
 
   checkTile(x: number, y: number) {
-    const test = {
+    const test: any = {
       walls: this.grid.walls.check(x, y) || false,
       steel: this.grid.steel.check(x, y),
       brick: this.grid.brick.check(x, y),
       bomb: this.grid.bombs.check(x, y),
       bonus: this.grid.bonus.check(x, y),
+      bonusType: null,
+      bonusActiv: null,
       isSolid: false
     };
     if (test.bonus) {
-      // test.bonusType = this.grid.bonus.typeOfBonus(x,y);
-      // test.bonusActiv = this.grid.bonus.bonusActiv(x,y);
+      test.bonusType = this.grid.bonus.typeOfBonus(x,y);
+      test.bonusActiv = this.grid.bonus.bonusActiv(x,y);
     }
     if (test.walls || test.steel || test.brick || test.bomb) test.isSolid = true;
     return test;
   };
 
-  // Map.prototype.checkForEnemies = function(x,y)
-  // {
-  //   if (this.enemies.isOnTile(x,y) && this.player.stage === "playing")
-  //   {
-  //     this.stage = 9;
-  //     this.player.die();
-  //   }
-  // };
+  checkForEnemies(x: number, y: number)
+  {
+    if (this.enemies.isOnTile(x,y) && this.player.stage === "playing")
+    {
+      this.stage = 9;
+      this.player.die();
+    }
+  };
 
   findRoadtoTarget(moveableObject: iMoveableObject, x: number, y: number, level: string) {
-    var road = {
+    let road = {
       arr: this.pfGrid.findWay(new Vector2(x, y),
         new Vector2(moveableObject.tilePosition.xTile, moveableObject.tilePosition.yTile), level),
       inLine: false,
@@ -204,8 +211,8 @@ export default class Map {
 
     if (x === moveableObject.tilePosition.xTile || y === moveableObject.tilePosition.yTile)
       road.inLine = true;
-    var test = { x: true, y: true };
-    for (var i = 1, j = road.arr.length; i < j; i++) {
+    let test = { x: true, y: true };
+    for (let i = 1, j = road.arr.length; i < j; i++) {
       if (road.arr[i][0] != road.arr[i - 1][0]) test.x = false;
       if (road.arr[i][1] != road.arr[i - 1][1]) test.y = false;
     }
@@ -213,112 +220,110 @@ export default class Map {
     return road;
   };
 
-  // Map.prototype.checkBonus = function (x,y) {
-  //   var checkTile = this.checkTile(x,y);
-  //   if (checkTile.bonus && checkTile.bonusActiv && !checkTile.brick)
-  //     {
-  //       switch (checkTile.bonusType) {
-  //         case "bomb":
-  //           this.player.increaseNrOfBombs();
-  //           sounds.play('bonus');
-  //           this.grid.bonus.remove(x,y);
-  //           break;
-  //         case "flames":
-  //           sounds.play('bonus');
-  //           this.grid.bonus.remove(x,y);
-  //           this.player.increaseFlames();
-  //           break;
-  //         case "speed":
-  //           sounds.play('bonus');
-  //           this.grid.bonus.remove(x,y);
-  //           this.player.increaseSpeed();
-  //           break;
-  //         case "detonator":
-  //           sounds.play('bonus');
-  //           this.grid.bonus.remove(x,y);
-  //           this.player.activateDetonator();
-  //           break;
-  //         case "extra_life":
-  //           sounds.play('bonus');
-  //           this.grid.bonus.remove(x,y);
-  //           this.player.increaseLives();
-  //           this.game.gamePlayer.setLives(this.player.lives);
-  //           break;
-  //         case "bomb_pass":
-  //           sounds.play('bonus');
-  //           this.grid.bonus.remove(x,y);
-  //           this.player.activateBombPass();
-  //           break;
-  //         case "brick_pass":
-  //           sounds.play('bonus');
-  //           this.grid.bonus.remove(x,y);
-  //           this.player.activateBrickPass();
-  //           break;
-  //         case "vest":
-  //           sounds.play('bonus');
-  //           this.grid.bonus.remove(x,y);
-  //           this.player.activateVest();
-  //           break;
-  //         case "exit":
-  //           this.player.win();
-  //           this.stage = 9;
-  //           break;
-  //         default:
-  //           result = "Nie wiem";
-  //           break;
-  //       }
-  //     }
-  // };
-
-  timeIsOver(): void {
-    // var enemyPoints = [new Vector2(1, 1), new Vector2(this.w - 2, 1), new Vector2(1, this.h - 2), new Vector2(this.w - 2, this.h - 2)];
-    // var i = enemyPoints.length;
-    // while(i--)
-    //   {
-    //     var enemy = new Enemy(enemyPoints[i], this, 'diamond');
-    //     this.enemies.add(enemy);
-    //     enemy.bonus.goForPlayer = true;
-    //   }
+  checkBonus(x: number, y: number) {
+    let checkTile = this.checkTile(x,y);
+    if (checkTile.bonus && checkTile.bonusActiv && !checkTile.brick)
+      {
+        switch (checkTile.bonusType) {
+          case "bomb":
+            this.player.increaseNrOfBombs();
+            sounds.play('bonus');
+            this.grid.bonus.remove(x,y);
+            break;
+          case "flames":
+            sounds.play('bonus');
+            this.grid.bonus.remove(x,y);
+            this.player.increaseFlames();
+            break;
+          case "speed":
+            sounds.play('bonus');
+            this.grid.bonus.remove(x,y);
+            this.player.increaseSpeed();
+            break;
+          case "detonator":
+            sounds.play('bonus');
+            this.grid.bonus.remove(x,y);
+            this.player.activateDetonator();
+            break;
+          case "extra_life":
+            sounds.play('bonus');
+            this.grid.bonus.remove(x,y);
+            this.player.increaseLives();
+            this.game.gamePlayer.setLives(this.player.lives);
+            break;
+          case "bomb_pass":
+            sounds.play('bonus');
+            this.grid.bonus.remove(x,y);
+            this.player.activateBombPass();
+            break;
+          case "brick_pass":
+            sounds.play('bonus');
+            this.grid.bonus.remove(x,y);
+            this.player.activateBrickPass();
+            break;
+          case "vest":
+            sounds.play('bonus');
+            this.grid.bonus.remove(x,y);
+            this.player.activateVest();
+            break;
+          case "exit":
+            this.player.win();
+            this.stage = 9;
+            break;
+          default:
+            break;
+        }
+      }
   };
 
-  // Map.prototype.activateBombs = function () {
-  //   this.grid.bombs.activateAll();
-  // };
+  timeIsOver(): void {
+    let enemyPoints = [new Vector2(1, 1), new Vector2(this.w - 2, 1), new Vector2(1, this.h - 2), new Vector2(this.w - 2, this.h - 2)];
+    let i = enemyPoints.length;
+    while(i--)
+      {
+        let enemy = new Enemy(enemyPoints[i], this.game, this.enemies, 'diamond');
+        this.enemies.add(enemy);
+        enemy.bonus.goForPlayer = true;
+      }
+  };
 
-  // Map.prototype.makeExploded = function (x,y) {
-  //   var checkTile = this.checkTile(x,y);
-  //   if (checkTile.bomb)
-  //     {
-  //     this.grid.bombs.explode(x,y);
-  //     }
-  //   if (checkTile.brick)
-  //     {
-  //     this.grid.brick.explode(x,y);
-  //     if (checkTile.bonusType != 'exit' || this.enemies.countAlive === 0)
-  //       {
-  //         this.grid.bonus.makeActiv(x,y);
-  //       }
+  activateBombs() {
+    this.grid.bombs.activateAll();
+  };
 
-  //     }
-  // };
+  makeExploded(x: number, y: number) {
+    let checkTile = this.checkTile(x,y);
+    if (checkTile.bomb)
+      {
+      this.grid.bombs.explode(x,y);
+      }
+    if (checkTile.brick)
+      {
+      this.grid.brick.explode(x,y);
+      if (checkTile.bonusType != 'exit' || this.enemies.countAlive === 0)
+        {
+          this.grid.bonus.makeActiv(x,y);
+        }
+      }
+  };
 
-  // Map.prototype.makeFry = function (x,y) {
-  //   var checkTile = this.checkTile(x,y);
-  //   if (this.player.checkImpact(x,y) && this.player.stage === "playing"  && !this.player.bonus.vest)
-  //   {
-  //     this.stage = 9;
-  //     this.player.die();
-  //   }
-  //   if (checkTile.bonus && checkTile.bonusType != 'exit' && checkTile.bonusActiv)
-  //     {
-  //       this.grid.bonus.explode(x,y);
-  //     }
-  //   if (checkTile.bonus && checkTile.bonusType === 'exit' && this.player.stage === "playing")
-  //     {
-  //       this.enemies.exitExploded(new Vector2(x,y));
-  //     }
-  //   this.enemies.checkImpact(x,y);
-  // };
+  makeFry(x: number, y: number) {
+    let checkTile = this.checkTile(x,y);
+    if (this.player.checkImpact(x,y) && this.player.stage === "playing"  && !this.player.bonus.vest)
+    {
+      this.stage = 9;
+      this.player.die();
+    }
+    if (checkTile.bonus && checkTile.bonusType != 'exit' && checkTile.bonusActiv)
+      {
+        this.grid.bonus.explode(x,y);
+      }
+    if (checkTile.bonus && checkTile.bonusType === 'exit' && this.player.stage === "playing")
+      {
+        this.enemies.exitExploded(new Vector2(x,y));
+      }
+    this.enemies.checkImpact(x,y);
+  };
 
   followTarget(moveableObject: iMoveableObject) {
     if (this.mapBigerThenCanvas.x || this.mapBigerThenCanvas.y) {
@@ -358,25 +363,25 @@ export default class Map {
     this.grid.grass.update(delta);
     this.grid.walls.update(delta);
     this.grid.steel.update(delta);
-    // this.grid.bombs.update(delta);
-    // this.grid.bonus.update(delta);
+    this.grid.bombs.update(delta);
+    this.grid.bonus.update(delta);
     this.grid.brick.update(delta);
 
     this.enemies.update(delta);
-    // this.pointsList.update(delta);
+    this.pointsList.update(delta);
 
-    // if (this.enemies.countAlive === 0)
-    //   {
-    //     this.grid.bonus.makeAllActiv();
-    //     this.grid.brick.makeSparky();
-    //   }
+    if (this.enemies.countAlive === 0)
+      {
+        this.grid.bonus.makeAllActiv();
+        this.grid.brick.makeSparky();
+      }
 
     this.followTarget(this.enemies.at(0));
     this.keepInCanvas();
 
-    // this.player.update(delta);
+    this.player.update(delta);
 
-    // var timer = this.timer.update(delta);
+    this.timer.update(delta);
   };
 
 
@@ -384,39 +389,39 @@ export default class Map {
     this.grid.grass.draw();
     this.grid.walls.draw();
     this.grid.steel.draw();
-    // this.grid.bombs.draw();
-    // this.grid.bonus.draw();
+    this.grid.bombs.draw();
+    this.grid.bonus.draw();
     this.grid.brick.draw();
 
-    // this.player.draw();
+    this.player.draw();
     this.enemies.draw();
-    // this.pointsList.draw();
+    this.pointsList.draw();
 
-    // if (this.stage === 1)
-    // {
-    //   canvas.drawRectangle(0, 70, canvas.width, canvas.height, "rgba(0,0,0,"+this.black+")");
-    //   if (this.black > 0)
-    //   {
-    //     this.black -= 0.01;
-    //   }
-    //   else
-    //   {
-    //     this.stage = 5;
-    //   }
-    // }
+    if (this.stage === 1)
+    {
+      this.game.canvas.drawRectangle(0, 70, this.game.canvas.width, this.game.canvas.height, "rgba(0,0,0,"+this.black+")");
+      if (this.black > 0)
+      {
+        this.black -= 0.01;
+      }
+      else
+      {
+        this.stage = 5;
+      }
+    }
 
-    // if (this.stage === 9)
-    // {
-    //   canvas.drawRectangle(0, 70, canvas.width, canvas.height, "rgba(0,0,0,"+this.black+")");
-    //   if (this.black < 1)
-    //     {
-    //       this.black += 0.005;
-    //     }
-    //     else
-    //     {
-    //       this.die("map");
-    //     }
-    // }
+    if (this.stage === 9)
+    {
+      this.game.canvas.drawRectangle(0, 70, this.game.canvas.width, this.game.canvas.height, "rgba(0,0,0,"+this.black+")");
+      if (this.black < 1)
+        {
+          this.black += 0.005;
+        }
+        else
+        {
+          this.die("map");
+        }
+    }
   };
 
 }

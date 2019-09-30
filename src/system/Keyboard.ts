@@ -5,7 +5,7 @@ export default class Keyboard {
   public keyStates: ButtonState[] = [];
 
   constructor() {
-    for (var i = 0; i < 256; ++i) {
+    for (let i = 0; i < 256; ++i) {
       this.keyStates.push(new ButtonState());
     }
     window.addEventListener("keydown", event => this.handleKeyDown(event));
@@ -35,7 +35,7 @@ export default class Keyboard {
   };
 
   reset(): void {
-    for (var i = 0; i < 256; ++i) {
+    for (let i = 0; i < 256; ++i) {
       this.keyStates[i].pressed = false;
     }
   };

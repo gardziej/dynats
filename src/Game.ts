@@ -60,44 +60,50 @@ export default class Game {
     this.gameStateManager.add('game_pause', new PauseState(this));
     this.gameStateManager.add('hi_score', new HiScore(this));
     this.gameStateManager.switchTo('game_title_page').reset();
-    // this.gameStateManager.switchTo('stage_number').reset();
     requestAnimationFrame(() => { this.mainLoop() });
   }
 
+  restartMap(type: string) {
+    if (type === 'die')
+      this.gamePlayer.resetForDie();
+    else if (type === 'map')
+      this.gamePlayer.map++;
+    if (this.gamePlayer.lives >= 0) {
+      this.gameStateManager.switchTo('stage_number').reset();
+    }
+    else {
+      this.gameStateManager.switchTo('game_over');
+    }
+  };
+
   handleInput() {
-    if (this.keyboard.pressed(Key.S))
-      {
-        sounds.soundsChange();
-        this.gamePlayer.updateSounds();
-      }
+    if (this.keyboard.pressed(Key.S)) {
+      sounds.soundsChange();
+      this.gamePlayer.updateSounds();
+    }
 
-    if (this.keyboard.pressed(Key.H))
-      {
+    if (this.keyboard.pressed(Key.H)) {
       this.gameStateManager.switchTo("hi_score").reset();
-      }
+    }
 
-    if (this.keyboard.pressed(Key.P) && this.gameStateManager.getLastMasterStateId() === "game_state_playing")
-      {
+    if (this.keyboard.pressed(Key.P) && this.gameStateManager.getLastMasterStateId() === "game_state_playing") {
       this.gameStateManager.switchTo('game_pause');
-      }
+    }
 
-    if (this.keyboard.pressed(Key.Q) && this.gameStateManager.getLastMasterStateId() === "game_state_playing")
-      {
+    if (this.keyboard.pressed(Key.Q) && this.gameStateManager.getLastMasterStateId() === "game_state_playing") {
       this.gameStateManager.switchTo('game_over').reset();
-      }
+    }
 
-    if (this.keyboard.pressed(Key.escape))
-      {
+    if (this.keyboard.pressed(Key.escape)) {
       this.gameStateManager.escape();
-      }
+    }
   };
 
   mainLoop(): void {
     const delta = 1 / 60;
-    if (this.gameStateManager.getCurrentGameStateId() !== "game_over")
-      {
-        this.handleInput();
-      }
+    if (this.gameStateManager.getCurrentGameStateId() !== "game_over") {
+      this.handleInput();
+    }
     this.gameStateManager.handleInput(delta);
     this.gameStateManager.update(delta);
     this.canvas.clear();

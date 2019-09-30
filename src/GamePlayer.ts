@@ -122,7 +122,7 @@ export default class GamePlayer {
     localStorage.setItem(this.pref + "hiscore", String(this.hiscore));
   };
 
-  resetForDie(score: number): void {
+  resetForDie(): void {
     this.lives--;
 
     this.bonus = {

@@ -15,10 +15,10 @@ export default class GridSteel extends Grid {
   draw(delta: number): void {
     super.draw(delta);
 
-    for (var i in this.tiles) {
-      var x = Number(i) % this.cols;
-      var y = Math.floor(Number(i) / this.cols);
-      var shadowPosition = this.calculateTilePosition(x, y + 1);
+    for (let i in this.tiles) {
+      let x = Number(i) % this.cols;
+      let y = Math.floor(Number(i) / this.cols);
+      let shadowPosition = this.calculateTilePosition(x, y + 1);
       this.game.canvas.drawImage((sprites.data.tiles as iSpriteDataCollection).grass as iSpriteData, shadowPosition, 0, Vector2.zero, new Rectangle(48, 0, Tile.size.width, Tile.size.height));
     }
 
@@ -26,8 +26,8 @@ export default class GridSteel extends Grid {
 
   fill(): void {
 
-    for (var i = 1; i < this.cols - 1; i++) {
-      for (var j = 1; j < this.rows - 1; j++) {
+    for (let i = 1; i < this.cols - 1; i++) {
+      for (let j = 1; j < this.rows - 1; j++) {
         if (i % 2 === 0 && j % 2 === 0) {
           this.add(i, j, 0);
         }

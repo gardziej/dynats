@@ -19,7 +19,7 @@ export default class GameObjectList {
   }
 
   remove(gameobject: any) {
-    for (var i = 0, len = this.gameObjects.length; i < len; i++) {
+    for (let i = 0, len = this.gameObjects.length; i < len; i++) {
       if (gameobject === this.gameObjects[i]) {
         this.gameObjects.splice(i, 1);
         gameobject.parent = null;
@@ -36,13 +36,13 @@ export default class GameObjectList {
   }
 
   clear() {
-    for (var i = 0, len = this.gameObjects.length; i < len; i++)
+    for (let i = 0, len = this.gameObjects.length; i < len; i++)
       this.gameObjects[i].game = null;
     this.gameObjects = [];
   }
 
   find(id: number) {
-    for (var i = 0, len = this.gameObjects.length; i < len; i++) {
+    for (let i = 0, len = this.gameObjects.length; i < len; i++) {
       if (this.gameObjects[i].id === id)
         return this.gameObjects[i];
     }
@@ -50,17 +50,17 @@ export default class GameObjectList {
   }
 
   update(delta: number) {
-    for (var i = 0, len = this.gameObjects.length; i < len; i++)
+    for (let i = 0, len = this.gameObjects.length; i < len; i++)
       if (typeof this.gameObjects[i] !== "undefined") this.gameObjects[i].update(delta);
   }
 
   draw() {
-    for (var i = 0, len = this.gameObjects.length; i < len; i++)
+    for (let i = 0, len = this.gameObjects.length; i < len; i++)
       if (typeof this.gameObjects[i] !== "undefined") this.gameObjects[i].draw();
   }
 
   reset() {
-    for (var i = 0, len = this.gameObjects.length; i < len; i++)
+    for (let i = 0, len = this.gameObjects.length; i < len; i++)
       this.gameObjects[i].reset();
   }
 

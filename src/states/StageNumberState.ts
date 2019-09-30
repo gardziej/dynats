@@ -28,10 +28,6 @@ export default class StageNumberState extends BaseState {
 
   reset(): void {
     const bonuses = 4;
-    // const mapSize = {
-    //   x: 14,
-    //   y: 12
-    // };
     const mapSize = {
       x: 6 + this.game.gamePlayer.map + myHelper.getRandomInt(5, 10),
       y: 6 + this.game.gamePlayer.map + myHelper.getRandomInt(0, 5),
@@ -41,7 +37,7 @@ export default class StageNumberState extends BaseState {
     const enemiesList: any = [];
 
     while (enemiesList.length <= enemiesCount) {
-      var chosenEnemy = myHelper.pickRandomProperty(Enemy.types);
+      let chosenEnemy = myHelper.pickRandomProperty(Enemy.types);
       if (Enemy.types[chosenEnemy].minMap <= this.game.gamePlayer.map &&
         ((Enemy.types[chosenEnemy].maxMap >= this.game.gamePlayer.map && Enemy.types[chosenEnemy].maxMap > 0) || Enemy.types[chosenEnemy].maxMap === -1) &&
         myHelper.getRandomInt(0, 9) < Enemy.types[chosenEnemy].prob)
@@ -50,9 +46,9 @@ export default class StageNumberState extends BaseState {
 
     this.game.gamePlayer.time = mapSize.x * mapSize.y / 2;
     if (this.game.gamePlayer.time > 600) this.game.gamePlayer.time = 599;
-    const bricksCount = 0; //mapSize.x * mapSize.y / 5;
+    const bricksCount = mapSize.x * mapSize.y / 5;
 
-  //   if (bricksCount < bonuses) bricksCount = bonuses;
+    if (bricksCount < bonuses) bricksCount = bonuses;
 
     this.game.bonus = new Bonus(this.game.gamePlayer, bonuses);
     this.game.dashboard = new DashBoard(this.game);

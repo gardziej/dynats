@@ -18,7 +18,7 @@ export default class Enemies extends GameObjectList {
   }
 
   isOnTile(x: number, y: number) {
-    for (var i in this.gameObjects) {
+    for (let i in this.gameObjects) {
       if (typeof this.gameObjects[i] !== "undefined" && this.gameObjects[i].checkImpact(x, y) && this.gameObjects[i].stage === 'playing') {
         return true;
       }
@@ -32,16 +32,16 @@ export default class Enemies extends GameObjectList {
   };
 
   exitExplodedMake() {
-    var i = 12;
+    let i = 12;
     while (i) {
-      var x = this.exitPosition.x;
-      var y = this.exitPosition.y;
-      var newPosition = new Vector2 (
+      let x = this.exitPosition.x;
+      let y = this.exitPosition.y;
+      let newPosition = new Vector2 (
         myHelper.getRandomInt(this.exitPosition.x - 3, this.exitPosition.x + 3),
         myHelper.getRandomInt(this.exitPosition.y - 3, this.exitPosition.y + 3)
       );
       if (!this.game.map.isSolid(newPosition.x, newPosition.y)) {
-        var enemy = new Enemy(newPosition, this.game, this, 'fire');
+        let enemy = new Enemy(newPosition, this.game, this, 'fire');
         enemy.bonus.goForPlayer = false;
         enemy.delayedGoForPlayer(5);
         enemy.speed = 6;
@@ -62,21 +62,21 @@ export default class Enemies extends GameObjectList {
       this.exitExplodedMake();
     }
 
-    for (var i in this.gameObjects) {
+    for (let i in this.gameObjects) {
       this.gameObjects[i].update(delta);
     }
   };
 
   get countAlive() {
-    var alives = 0;
-    for (var i in this.gameObjects) {
+    let alives = 0;
+    for (let i in this.gameObjects) {
       if (this.gameObjects[i].stage === 'playing') alives++;
     }
     return alives;
   }
 
   checkImpact(x: number, y: number) {
-    for (var i in this.gameObjects) {
+    for (let i in this.gameObjects) {
       if (typeof this.gameObjects[i] !== "undefined" && this.gameObjects[i].checkImpact(x, y) && this.gameObjects[i].stage === 'playing') {
         this.gameObjects[i].die();
       }

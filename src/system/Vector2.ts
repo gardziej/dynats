@@ -67,7 +67,7 @@ export default class Vector2 {
   subtract(v: Vector2): Vector2
   subtract(n: number): Vector2
   subtract(v: any) {
-    var result = this.copy();
+    let result = this.copy();
     return result.subtractFrom(v);
   };
 
@@ -88,7 +88,7 @@ export default class Vector2 {
   divide(v: Vector2): Vector2
   divide(n: number): Vector2
   divide(a: any) {
-    var result = this.copy();
+    let result = this.copy();
     return result.divideBy(a);
   };
 
@@ -109,7 +109,7 @@ export default class Vector2 {
   multiply(v: Vector2): Vector2
   multiply(n: number): Vector2
   multiply(a: any) {
-    var result = this.copy();
+    let result = this.copy();
     return result.multiplyWith(a);
   };
 

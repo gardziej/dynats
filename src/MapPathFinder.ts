@@ -14,11 +14,9 @@ export default class MapPathFinder {
   }
 
   findWay(a: Vector2, b: Vector2, level: string) {
-    var finder = new PF.AStarFinder();
-    var grid = this.pfGrid[level].clone();
-    var path = finder.findPath(a.x, a.y, b.x, b.y, grid);
-    console.log('PRG: a.x, a.y, b.x, b.y, grid', a.x, a.y, b.x, b.y, grid); // TODO remove this
-    console.log('PRG: path', path); // TODO remove this
+    let finder = new PF.AStarFinder();
+    let grid = this.pfGrid[level].clone();
+    let path = finder.findPath(a.x, a.y, b.x, b.y, grid);
     if (path.length > 0)
       return path;
     else return false;
@@ -32,17 +30,17 @@ export default class MapPathFinder {
 
   draw(level: number): void {
     /*
-    for(var i = 0; i < this.w; i++)
+    for(let i = 0; i < this.w; i++)
     {
-      for(var j = 0; j < this.h; j++)
+      for(let j = 0; j < this.h; j++)
       {
         if (this.pfGrid[level].isWalkableAt(i,j))
           canvas.drawRectangle(this.parent.x + i * Tile.size.width, this.parent.y + j * Tile.size.height, Tile.size.width, Tile.size.height, "yellow");
       }
     }
 
-    var path = this.findWay(new Vector2(1,1), new Vector2(17,9), level);
-    if (path) for (var v in path)
+    let path = this.findWay(new Vector2(1,1), new Vector2(17,9), level);
+    if (path) for (let v in path)
       {
         canvas.drawRectangle(this.parent.x + path[v][0] * Tile.size.width, this.parent.y + path[v][1] * Tile.size.height, Tile.size.width, Tile.size.height, "rgba(255,0,0,0.5)");
       }
