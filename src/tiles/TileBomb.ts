@@ -166,7 +166,7 @@ export default class TileBomb extends Tile {
       }
   }
 
-  explodeDraw(pos, position, frame) {
+  explodeDraw(pos: number, position: Vector2, frame: number) {
     this.game.canvas.drawImage(sprites.getSprite('explosion'), position, 0, Vector2.zero, new Rectangle((pos + frame) * Tile.size.width, 0, Tile.size.width, Tile.size.height));
   }
 

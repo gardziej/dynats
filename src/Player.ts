@@ -29,6 +29,7 @@ export default class Player {
   public vestTimerMax: number;
   public winCutPosition: number;
   public speed: number = 0;
+  public lives: number = 0;
   private currentAnimation: string;
   public bonus: any;
   public bombs: any;
@@ -171,12 +172,12 @@ export default class Player {
     return false;
   };
 
-  die(x: number, y: number) {
+  die() {
     this.stage = 'die';
     sounds.play('player_die');
   };
 
-  win(x: number, y: number) {
+  win() {
     this.stage = 'win';
     sounds.play('player_win');
   };
@@ -256,7 +257,7 @@ export default class Player {
 
   };
 
-  update(delta) {
+  update(delta: number) {
     this.calculateOnTile();
     this.velocity = Vector2.zero;
 
@@ -302,10 +303,10 @@ export default class Player {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
-    this.origin = {
-      x: this.position.x + this.width / 2,
-      y: this.position.y + this.height / 2
-    };
+    this.origin = new Vector2(
+      this.position.x + this.width / 2,
+      this.position.y + this.height / 2
+    );
 
     if (this.bonus.vest) {
       if (this.vestTimer >= 0)

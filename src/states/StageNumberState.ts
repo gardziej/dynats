@@ -46,7 +46,7 @@ export default class StageNumberState extends BaseState {
 
     this.game.gamePlayer.time = mapSize.x * mapSize.y / 2;
     if (this.game.gamePlayer.time > 600) this.game.gamePlayer.time = 599;
-    const bricksCount = mapSize.x * mapSize.y / 5;
+    let bricksCount = mapSize.x * mapSize.y / 5;
 
     if (bricksCount < bonuses) bricksCount = bonuses;
 

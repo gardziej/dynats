@@ -6,8 +6,8 @@ export default interface iTilePosition {
   right?: boolean;
   bottom?: boolean;
   left?: boolean;
-  w?: number;
-  h?: number;
+  w?: boolean;
+  h?: boolean;
   topFrame?: boolean;
   rightFrame?: boolean;
   bottomFrame?: boolean;
