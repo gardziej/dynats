@@ -1,7 +1,6 @@
 import Vector2 from "./system/Vector2";
 import sprites from "./system/Sprites";
 import Game from "./Game";
-import iSpriteData from "./system/interfaces/iSpriteData";
 
 export default class DashBoard {
 

@@ -55,9 +55,9 @@ export default class Player {
     this.animations.walkingDown = new Animation(this.game, this, sprites.getSprite('player', 'walking'), true, 0.1, false, null, [8, 11]);
     this.animations.walkingLeft = new Animation(this.game, this, sprites.getSprite('player', 'walking'), true, 0.1, false, null, [12, 15]);
 
-    this.animations.die = new Animation(this.game, this, sprites.getSprite('player', 'die'), false, 0.15);
-    this.animations.win = new Animation(this.game, this, sprites.getSprite('player', 'idle'), true, 0.15);
-    this.animations.stars = new Animation(this.game, this, sprites.getSprite('player', 'stars'), true, 0.15);
+    this.animations.die = new Animation(this.game, this, sprites.getSprite('player', 'die'), false, 0.15, false);
+    this.animations.win = new Animation(this.game, this, sprites.getSprite('player', 'idle'), true, 0.15, false);
+    this.animations.stars = new Animation(this.game, this, sprites.getSprite('player', 'stars'), true, 0.15, false);
 
     this.winCutPosition = 0;
     this.vestTimer = 0;

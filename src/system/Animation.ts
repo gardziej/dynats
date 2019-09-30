@@ -32,7 +32,7 @@ export default class Animation {
       this.frame.start = oneFrameNumber;
       this.frame.end = oneFrameNumber;
     }
-    else if (typeof range !== 'undefined' && (range instanceof Array)) {
+    else if (typeof range !== 'undefined' && (range instanceof Array) && range.length > 0) {
       this.frame.start = range[0];
       this.frame.end = range[1];
     }

@@ -11,6 +11,7 @@ export default class MapTimer {
   };
 
   constructor(public time: number, public map: Map) {
+    console.log('PRG: time', time); // TODO remove this
     this.leftTime = time;
 
   }
@@ -24,10 +25,14 @@ export default class MapTimer {
   }
 
   toString(): string {
+    console.log('PRG: this.leftTime', this.leftTime); // TODO remove this
     if (this.leftTime >= 0) {
       let minutes = Math.floor(this.leftTime / 60);
       let seconds = Math.floor(this.leftTime % 60);
-      return (minutes + ":" + (seconds < 10) ? String(seconds) : "0" + seconds);
+      let time: string = String(minutes) + ":";
+      time += (seconds > 10) ? String(seconds) : "0" + String(seconds);
+      console.log('PRG: ', time, minutes, seconds ); // TODO remove this
+      return time;
     }
     else {
       return "0:00";
